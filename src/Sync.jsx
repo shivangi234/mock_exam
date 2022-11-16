@@ -36,6 +36,7 @@ import { TransitionProps } from "@mui/material/transitions";
 import HomeIcon from "@mui/icons-material/Home";
 import SyncIcon from "@mui/icons-material/Sync";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import pray from "../src/images/pray.png"
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -235,7 +236,7 @@ const Dashboard = () => {
           <Toolbar />
 
           {/* AppBar */}
-          <Box sx={{ margin: "2px" }}>
+          <Box sx={{ margin: "2px",mb:5 }}>
             <Grid container justifyContent="center">
               <Grid item lg={2}>
                 <Typography
@@ -268,7 +269,7 @@ const Dashboard = () => {
           </Box>
 
           <Divider />
-
+          <img src={pray}/>
           <Card>
             <CardContent sx={{ margin: "15px" }}>
               <Grid container justifyContent="center" spacing={7}>
@@ -318,12 +319,12 @@ const Dashboard = () => {
                 </Grid>
                 <Grid item lg={2}>
                   <Box sx={{ textAlign: "center" }}>
-                    <Button
+                    <Button fullWidth
                       size="large"
                       variant="contained"
                       onClick={showResults}
-                      sx={{ backgroundColor: "#2979FF", color: "white" }}
-                      endIcon={<InsertDriveFileIcon />}
+                      sx={{ backgroundColor: "#2979FF", color: "white", }}
+                      startIcon={<InsertDriveFileIcon />}
                     >
                       View
                     </Button>
@@ -334,38 +335,46 @@ const Dashboard = () => {
           </Card>
           {showDataTable ? (
             <Grid container sx={{ mt: 1 }} justifyContent="center">
-              <Grid item lg={12}>
-                <Card>
-                  <CardContent>
-                    <div>
-                      <DataTable
-                        customStyles={customStyles}
-                        columns={columns}
-                        data={countries}
-                        pagination
-                        fixedHeader
-                        fixedHeaderScrollHeight="500px"
-                        selectableRows
-                        selectableRowsHighlight
-                        highlightOnHover
-                        // actions ={<Button variant="contained">Views</Button>}
-                        subHeader
-                        // subHeaderAlign="left"
-                        subHeaderComponent={
-                          <input
-                            type="text"
-                            placeholder="Search here"
-                            style={{ width: "200px" }}
-                            value={search}
-                            onChange={(e) => setSearch(e.target.value)}
-                          />
-                        }
+            <Grid item lg={12}>
+              <Card>
+                <CardContent>
+                  {/* <div > */}
+                  <DataTable
+                    customStyles={customStyles}
+                    columns={columns}
+                    data={countries}
+                    pagination
+                    // fixedHeader
+                    fixedHeaderScrollHeight="500px"
+                    selectableRows
+                    selectableRowsHighlight
+                    highlightOnHover
+                    // actions ={<Button variant="contained">Views</Button>}
+                    subHeader
+                    // subHeaderAlign="left"
+                    subHeaderComponent={
+                      <input
+                        type="text" 
+                        placeholder=" Search here"
+                        style={{
+                          width: "250px",
+                          height: "50px",
+                          fontSize: "16px",
+                          spacing: (0, 2),
+                          backgroundColor: "#E0E0E0",
+                          borderRadius: "5px",
+                          color: "#757575", display: 'flex',border:"none",
+                        }}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                       />
-                    </div>
-                  </CardContent>
-                </Card>
-              </Grid>
+                    }
+                  />
+                  {/* </div> */}
+                </CardContent>
+              </Card>
             </Grid>
+          </Grid>
           ) : (
             ""
           )}

@@ -123,7 +123,7 @@ const Dashboard = () => {
           <Toolbar />
 
           {/* AppBar */}
-          <Box sx={{ margin: "2px" }}>
+          <Box sx={{ margin: "2px",mb:5 }}>
             <Grid container justifyContent="center">
               <Grid item lg={2}>
                 <Typography
@@ -159,382 +159,356 @@ const Dashboard = () => {
           {/* The  Card main Content */}
           <Card>
             <CardContent>
-              <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
-                <AppBar position="static">
-                  <Tabs sx={{backgroundColor:"#0D47A1"}}
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="secondary"
-                    textColor="inherit"
-                    variant="fullWidth"
-                    aria-label="full width tabs example"
-                  >
-                    <Tab
-                      label="MCQ"
-                      sx={{ fontWeight: "bold", fontSize: "18px" }}
-                      {...a11yProps(0)}
-                    />
-                    <Tab
-                      label="LAQ"
-                      sx={{ fontWeight: "bold", fontSize: "18px" }}
-                      {...a11yProps(1)}
-                    />
-                    <Tab
-                      label="MCQ & SAQ"
-                      sx={{ fontWeight: "bold", fontSize: "18px" }}
-                      {...a11yProps(2)}
-                    />
-                  </Tabs>
-                </AppBar>
-                <SwipeableViews
-                  axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-                  index={value}
-                  onChangeIndex={handleChangeIndex}
-                >
-                  {/* MCQ Tab */}
-                  <TabPanel value={value} index={0} dir={theme.direction}>
-                    <Box sx={{ height: "200px" }}>
-                      <Grid container spacing={0}>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Subject:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Subjects}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="select subject"
-                                  />
-                                )}
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+              >
+                <Tab label="MCQ" {...a11yProps(0)}  sx={{fontWeight:"bold"}}/>
+                <Tab label="LAQ" {...a11yProps(1)}  sx={{fontWeight:"bold"}}/>
+                <Tab label="MCQ & SAQ" {...a11yProps(2)}  sx={{fontWeight:"bold"}}/>
+              </Tabs>
+
+              {/* MCQ Tab */}
+              <TabPanel value={value} index={0}>
+                <Box sx={{ height: "200px" }}>
+                  <Grid container spacing={0}>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Subject:
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Subjects}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="select subject"
                               />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Position:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Position}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="select subject"
-                                  />
-                                )}
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Position:
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Position}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="select subject"
                               />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Month/Year:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Month}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="Select Month/Year"
-                                  />
-                                )}
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Month/Year:
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Month}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="Select Month/Year"
                               />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid container>
-                          <Grid item lg={8} fullWidth>
-                            <Box sx={{ mt: 3 }}>
-                              <LocalizationProvider
-                                dateAdapter={AdapterDayjs}
-                                localeText={{
-                                  start: "Start Date",
-                                  end: "End Date",
-                                }}
-                              >
-                                <MobileDateRangePicker
-                                  value={item}
-                                  onChange={(newValue) => {
-                                    setItem(newValue);
-                                  }}
-                                  renderInput={(startProps, endProps) => (
-                                    <React.Fragment>
-                                      <TextField
-                                        {...startProps}
-                                        sx={{ width: "300px" }}
-                                      />
-                                      <Box sx={{ mx: 7 }}></Box>
-                                      <TextField
-                                        {...endProps}
-                                        sx={{ width: "300px" }}
-                                      />
-                                    </React.Fragment>
-                                  )}
-                                />
-                              </LocalizationProvider>
-                            </Box>
-                          </Grid>
-                          <Grid item lg={2} sx={{ mt: 4 }}>
-                            <Box sx={{ textAlign: "center" }}>
-                              <Button
-                                size="large"
-                                variant="contained"
-                                onClick={showResultCard}
-                                endIcon={<InsertDriveFileIcon />}
-                                sx={{
-                                  backgroundColor: "#2979FF",
-                                  color: "white",
-                                }}
-                              >
-                                View
-                              </Button>
-                            </Box>
-                          </Grid>
-                        </Grid>
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid container>
+                      <Grid item lg={8} fullWidth>
+                        <Box sx={{ mt: 3 }}>
+                          <LocalizationProvider
+                            dateAdapter={AdapterDayjs}
+                            localeText={{
+                              start: "Start Date",
+                              end: "End Date",
+                            }}
+                          >
+                            <MobileDateRangePicker
+                              value={item}
+                              onChange={(newValue) => {
+                                setItem(newValue);
+                              }}
+                              renderInput={(startProps, endProps) => (
+                                <React.Fragment>
+                                  <TextField
+                                    {...startProps}
+                                    sx={{ width: "300px" }}
+                                  />
+                                  <Box sx={{ mx: 7 }}></Box>
+                                  <TextField
+                                    {...endProps}
+                                    sx={{ width: "300px" }}
+                                  />
+                                </React.Fragment>
+                              )}
+                            />
+                          </LocalizationProvider>
+                        </Box>
                       </Grid>
-                    </Box>
-                  </TabPanel>
-                   {/* LAQ Tab */}
-                  <TabPanel value={value} index={1} dir={theme.direction}>
-                    <Box sx={{ height: "200px" }}>
-                      <Grid container spacing={0}>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Subject:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Subjects}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="select subject"
-                                  />
-                                )}
-                              />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Position:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Position}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="select subject"
-                                  />
-                                )}
-                              />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Month/Year:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Month}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="Select Month/Year"
-                                  />
-                                )}
-                              />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid container>
-                          <Grid item lg={8} fullWidth>
-                            <Box sx={{ mt: 3 }}>
-                              <LocalizationProvider
-                                dateAdapter={AdapterDayjs}
-                                localeText={{
-                                  start: "Start Date",
-                                  end: "End Date",
-                                }}
-                              >
-                                <MobileDateRangePicker
-                                  value={item}
-                                  onChange={(newValue) => {
-                                    setItem(newValue);
-                                  }}
-                                  renderInput={(startProps, endProps) => (
-                                    <React.Fragment>
-                                      <TextField
-                                        {...startProps}
-                                        sx={{ width: "300px" }}
-                                      />
-                                      <Box sx={{ mx: 7 }}></Box>
-                                      <TextField
-                                        {...endProps}
-                                        sx={{ width: "300px" }}
-                                      />
-                                    </React.Fragment>
-                                  )}
-                                />
-                              </LocalizationProvider>
-                            </Box>
-                          </Grid>
-                          <Grid item lg={2} sx={{ mt: 4 }}>
-                            <Box sx={{ textAlign: "center" }}>
-                              <Button
-                                size="large"
-                                variant="contained"
-                                onClick={showResultCard}
-                                endIcon={<InsertDriveFileIcon />}
-                                sx={{
-                                  backgroundColor: "#2979FF",
-                                  color: "white",
-                                }}
-                              >
-                                View
-                              </Button>
-                            </Box>
-                          </Grid>
-                        </Grid>
+                      <Grid item lg={2} sx={{ mt: 4 }}>
+                        <Box sx={{ textAlign: "center" }}>
+                          <Button
+                            size="large"
+                            variant="contained"
+                            onClick={showResultCard}
+                            startIcon={<InsertDriveFileIcon />}
+                            sx={{
+                              backgroundColor: "#2979FF",
+                              color: "white",
+                            }}
+                          >
+                            View
+                          </Button>
+                        </Box>
                       </Grid>
-                    </Box>
-                  </TabPanel>
-                   {/* MCQ & SAQ Tab */}
-                  <TabPanel value={value} index={2} dir={theme.direction}>
-                    <Box sx={{ height: "200px" }}>
-                      <Grid container spacing={0}>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Subject:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Subjects}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="select subject"
-                                  />
-                                )}
+                    </Grid>
+                  </Grid>
+                </Box>
+              </TabPanel>
+              {/* LAQ Tab */}
+              <TabPanel value={value} index={1}>
+                <Box sx={{ height: "200px" }}>
+                  <Grid container spacing={0}>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Subject:66
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Subjects}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="select subject"
                               />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Position:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Position}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="select subject"
-                                  />
-                                )}
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Position:
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Position}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="select subject"
                               />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid item lg={4}>
-                          <Box>
-                            <Typography variant="h7" fontWeight="bold">
-                              Month/Year:
-                              <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
-                                options={Month}
-                                sx={{ width: 300 }}
-                                renderInput={(params) => (
-                                  <TextField
-                                    {...params}
-                                    placeholder="Select Month/Year"
-                                  />
-                                )}
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Month/Year:
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Month}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="Select Month/Year"
                               />
-                            </Typography>
-                          </Box>
-                        </Grid>
-                        <Grid container>
-                          <Grid item lg={8} fullWidth>
-                            <Box sx={{ mt: 3 }}>
-                              <LocalizationProvider
-                                dateAdapter={AdapterDayjs}
-                                localeText={{
-                                  start: "Start Date",
-                                  end: "End Date",
-                                }}
-                              >
-                                <MobileDateRangePicker
-                                  value={item}
-                                  onChange={(newValue) => {
-                                    setItem(newValue);
-                                  }}
-                                  renderInput={(startProps, endProps) => (
-                                    <React.Fragment>
-                                      <TextField
-                                        {...startProps}
-                                        sx={{ width: "300px" }}
-                                      />
-                                      <Box sx={{ mx: 7 }}></Box>
-                                      <TextField
-                                        {...endProps}
-                                        sx={{ width: "300px" }}
-                                      />
-                                    </React.Fragment>
-                                  )}
-                                />
-                              </LocalizationProvider>
-                            </Box>
-                          </Grid>
-                          <Grid item lg={2} sx={{ mt: 4 }}>
-                            <Box sx={{ textAlign: "center" }}>
-                              <Button
-                                size="large"
-                                variant="contained"
-                                endIcon={<InsertDriveFileIcon />}
-                                onClick={showResultCard}
-                                sx={{
-                                  backgroundColor: "#2979FF",
-                                  color: "white",
-                                }}
-                              >
-                                View
-                              </Button>
-                            </Box>
-                          </Grid>
-                        </Grid>
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid container>
+                      <Grid item lg={8} fullWidth>
+                        <Box sx={{ mt: 3 }}>
+                          <LocalizationProvider
+                            dateAdapter={AdapterDayjs}
+                            localeText={{
+                              start: "Start Date",
+                              end: "End Date",
+                            }}
+                          >
+                            <MobileDateRangePicker
+                              value={item}
+                              onChange={(newValue) => {
+                                setItem(newValue);
+                              }}
+                              renderInput={(startProps, endProps) => (
+                                <React.Fragment>
+                                  <TextField
+                                    {...startProps}
+                                    sx={{ width: "300px" }}
+                                  />
+                                  <Box sx={{ mx: 7 }}></Box>
+                                  <TextField
+                                    {...endProps}
+                                    sx={{ width: "300px" }}
+                                  />
+                                </React.Fragment>
+                              )}
+                            />
+                          </LocalizationProvider>
+                        </Box>
                       </Grid>
-                    </Box>
-                  </TabPanel>
-                </SwipeableViews>
-              </Box>
-            </CardContent>
-          </Card>
-          {showDataCard ? (
+                      <Grid item lg={2} sx={{ mt: 4 }}>
+                        <Box sx={{ textAlign: "center" }}>
+                          <Button
+                            size="large"
+                            variant="contained"
+                            onClick={showResultCard}
+                            endIcon={<InsertDriveFileIcon />}
+                            sx={{
+                              backgroundColor: "#2979FF",
+                              color: "white",
+                            }}
+                          >
+                            View
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </TabPanel>
+              {/* MCQ & SAQ Tab */}
+              <TabPanel value={value} index={2}>
+                <Box sx={{ height: "200px" }}>
+                  <Grid container spacing={0}>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Subject:ss
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Subjects}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="select subject"
+                              />
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Position:
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Position}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="select subject"
+                              />
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item lg={4}>
+                      <Box>
+                        <Typography variant="h7" fontWeight="bold">
+                          Month/Year:
+                          <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={Month}
+                            sx={{ width: 300 }}
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                placeholder="Select Month/Year"
+                              />
+                            )}
+                          />
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid container>
+                      <Grid item lg={8} fullWidth>
+                        <Box sx={{ mt: 3 }}>
+                          <LocalizationProvider
+                            dateAdapter={AdapterDayjs}
+                            localeText={{
+                              start: "Start Date",
+                              end: "End Date",
+                            }}
+                          >
+                            <MobileDateRangePicker
+                              value={item}
+                              onChange={(newValue) => {
+                                setItem(newValue);
+                              }}
+                              renderInput={(startProps, endProps) => (
+                                <React.Fragment>
+                                  <TextField
+                                    {...startProps}
+                                    sx={{ width: "300px" }}
+                                  />
+                                  <Box sx={{ mx: 7 }}></Box>
+                                  <TextField
+                                    {...endProps}
+                                    sx={{ width: "300px" }}
+                                  />
+                                </React.Fragment>
+                              )}
+                            />
+                          </LocalizationProvider>
+                        </Box>
+                      </Grid>
+                      <Grid item lg={2} sx={{ mt: 4 }}>
+                        <Box sx={{ textAlign: "center" }}>
+                          <Button
+                            size="large"
+                            variant="contained"
+                            endIcon={<InsertDriveFileIcon />}
+                            onClick={showResultCard}
+                            sx={{
+                              backgroundColor: "#2979FF",
+                              color: "white",
+                            }}
+                          >
+                            View
+                          </Button>
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </TabPanel>
+              {showDataCard ? (
             <>
               <Card sx={{ mt: 3 }}>
                 <Typography
@@ -640,6 +614,8 @@ const Dashboard = () => {
           ) : (
             ""
           )}
+            </CardContent>
+          </Card>
         </Box>
       </Box>
     </>

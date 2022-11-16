@@ -28,3 +28,42 @@
     from {right: 0px;}
     to {right: 30px;background-color: rgb(239, 239, 241);}
   }
+  .button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+.listClick:hover  {
+background-color: #CFD8DC;
+}
+.boxClick1:hover  {
+  background-color:#F4F7FB;
+  transform: rotate(0.2deg);
+  }
+.boxClick2:hover  {
+    background-color:#F4F7FB;
+    transform: rotate(0.2deg);
+    }
+ .boxClick3:hover  {
+  background-color:#F4F7FB;
+  transform: rotate(0.2deg);
+  }
