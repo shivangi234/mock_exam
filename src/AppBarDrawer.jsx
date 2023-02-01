@@ -11,7 +11,7 @@ import {
   Grid,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
 } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -19,7 +19,7 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
+import ListItem from "@mui/material/ListItem";                                                                     
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -28,7 +28,7 @@ import SummarizeIcon from "@mui/icons-material/Summarize";
 import HelpCenterIcon from "@mui/icons-material/HelpCenter";
 import MenuIcon from "@mui/icons-material/Menu";
 import Logout from "@mui/icons-material/Logout";
-import PersonIcon from "@mui/icons-material/Person";
+import PersonIcon from "@mui/icons-material/Person";       
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
@@ -38,11 +38,11 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import GradingIcon from "@mui/icons-material/Grading";
 import SyncIcon from "@mui/icons-material/Sync";
 import UpdateIcon from "@mui/icons-material/Update";
-import ManageSearchIcon from "@mui/icons-material/ManageSearch";
+import ManageSearchIcon from "@mui/icons-material/ManageSearch";1
 import { ThemeProvider, useTheme, createTheme } from "@mui/material/styles";
 import blue from "@mui/material/colors/blue";
 import {
-  amber,
+  amber,                                            
   deepOrange,
   grey,
   indigo,
@@ -116,7 +116,7 @@ function AppBarDrawer(props) {
     <div>
       <Toolbar>
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb5_W3ED-ZiI5Zwbf5sFLRCC_H0oLCfmYRkdwuuWRIrg&s"
+          src="https://media.glassdoor.com/sqll/503743/silicon-techlab-squarelogo-1643983959442.png"
           alt="Logo"
           style={{ height: "65px", width: "100%" }}
         />

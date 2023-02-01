@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import AppBarDrawer from "./AppBarDrawer";
+import NewAppBar from "./NewAppBar";
 import {
   Autocomplete,
   Button,
@@ -11,6 +11,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  Paper,
   Toolbar,
   Typography,
   TextField,
@@ -19,7 +20,8 @@ import {
 import LinearProgress, {
   LinearProgressProps,
 } from "@mui/material/LinearProgress";
-
+import Checkbox from "@mui/material/Checkbox";
+import SearchIcon from "@mui/icons-material/Search";
 import axios from "axios";
 import { useEffect } from "react";
 import DataTable from "react-data-table-component";
@@ -31,12 +33,13 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import Slide from "@mui/material/Slide";
 import { TransitionProps } from "@mui/material/transitions";
+import InputBase from "@mui/material/InputBase";
+import { styled } from "@mui/material/styles";
 
 //Icons
 import HomeIcon from "@mui/icons-material/Home";
 import SyncIcon from "@mui/icons-material/Sync";
 import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
-import pray from "../src/images/pray.png"
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -66,6 +69,7 @@ function LinearProgressWithLabel(
 //select functions
 //For Question select
 const QuestionType = [
+  { label: "All" },
   { label: "MCQ" },
   { label: "MCQ & SAQ" },
   { label: "LAQ" },
@@ -74,6 +78,52 @@ const QuestionType = [
 const FetchType = [{ label: "Fetched" }, { label: "Not Fetched" }];
 
 const drawerWidth = 240;
+const Search = styled("div")(({ theme }) => ({
+  position: "relative",
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: "#EEEEEE",
+  "&:hover": {
+    backgroundColor: "#E3F2FD",
+  },
+  marginLeft: 0,
+  width: "100%",
+  height: "45px",
+
+  [theme.breakpoints.up("sm")]: {
+    marginLeft: theme.spacing(1),
+    width: "auto",
+  },
+}));
+
+const SearchIconWrapper = styled("div")(({ theme }) => ({
+  padding: theme.spacing(0, 2),
+  height: "100%",
+  position: "absolute",
+  pointerEvents: "none",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+}));
+
+const StyledInputBase = styled(InputBase)(({ theme }) => ({
+  color: "inherit",
+  fontWeight: "regular",
+  "& .MuiInputBase-input": {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      width: "15ch",
+      "&:focus": {
+        width: "20ch",
+      },
+    },
+  },
+}));
+const baseURL =
+  " https://demoexam.edusols.com/api/tassess/sync_quiz.php?oper=EXAM_LIST&org_code=STLIND&centre_code=STLIND&start_date=2022-01-01&end_date=2023-01-23&question_type=MCQ";
 
 const Dashboard = () => {
   //States
@@ -82,8 +132,23 @@ const Dashboard = () => {
   const [filteredCountries, setfilteredCountries] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [btnState, setBtnState] = React.useState(false);
-  const [progress, setProgress] = React.useState(10);
+  // const [progress, setProgress] = React.useState(10);
   const [progressBar, setProgressBar] = React.useState(false);
+  const [data, setData] = useState([]);
+  const [filtereddata, setFiltereddata] = useState([]);
+  const [progress, setProgress] = useState(0);
+  const [pending, setPending] = useState(true);
+
+  const loadData = async () => {
+    try {
+      const response = await axios.get(baseURL);
+      const result = response.data;
+      console.log(result);
+      setData(result.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   React.useEffect(() => {
     const timer = setInterval(() => {
       setProgress((prevProgress) =>
@@ -117,19 +182,10 @@ const Dashboard = () => {
     setProgressBar(true);
   };
 
-  const getCountries = async () => {
-    try {
-      const response = await axios.get("https://restcountries.com/v2/all");
-      setCountries(response.data);
-      setfilteredCountries(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   const customStyles = {
     rows: {
       style: {
-        minHeight: "70px", // override the row height
+        minHeight: "40px", // override the row height
       },
     },
     headCells: {
@@ -138,7 +194,8 @@ const Dashboard = () => {
         paddingRight: "8px",
         backgroundColor: "#0D47A1",
         color: "white",
-        minHeight: "70px",
+        minHeight: "35px",
+        fontSize: "15px",
       },
     },
     cells: {
@@ -150,30 +207,31 @@ const Dashboard = () => {
   };
   const columns = [
     {
-      name: "Serial No",
-      selector: (row) => row.name,
+      name: "Sl No",
+      cell: (row, index) => index + 1,
+      width: "5%",
+    },
+    {
+      name: "Quiz Name",
+      selector: (row) => row.quiz_name,
       sortable: "true",
-      maxWidth: "20px",
+      width: "25%",
     },
     {
-      name: "Test  Name",
-      selector: (row) => row.name,
+      name: "Quiz Open Time",
+      selector: (row) => row.quiz_open_date_time,
       sortable: "true",
-      maxWidth: "350px",
     },
     {
-      name: "Open Date",
-      selector: (row) => row.nativeName,
-    },
-    {
-      name: "Close Date",
-      selector: (row) => row.capital,
+      name: "Quiz Close Time",
+      selector: (row) => row.quiz_close_date_time,
+      sortable: "true",
     },
     {
       name: "Exam Status",
       selector: (row) => (
         <Chip
-          label="Fetched"
+          label="fetched"
           variant="outlined"
           size="medium"
           color="success"
@@ -184,20 +242,19 @@ const Dashboard = () => {
       name: "Photo Status",
       selector: (row) => (
         <Chip
-          label="Not Fetched"
+          label="fetched"
           variant="outlined"
           size="medium"
-          color="error"
+          color="warning"
         />
       ),
     },
-
     {
-      name: "Actions",
+      name: "Actions ",
       cell: (row) => (
         <Button
           variant="contained"
-          size="medium"
+          size="small"
           color="warning"
           onClick={handleClickOpen}
         >
@@ -208,23 +265,27 @@ const Dashboard = () => {
   ];
 
   useEffect(() => {
-    getCountries();
+    loadData();
   }, []);
 
   useEffect(() => {
-    const result = countries.filter((country) => {
-      return country.name.toLowerCase().match(search.toLowerCase());
+    const result = data.filter((quiz) => {
+      return quiz.quiz_name.toLowerCase().match(search.toLowerCase());
     });
-    setfilteredCountries(result);
+    // console.log(result);
+    setFiltereddata(result);
   }, [search]);
+
   return (
     <>
       <Helmet>
         <title>Sync</title>
       </Helmet>
-      <Box sx={{ display: "flex" }}>
+      <Box
+        sx={{ display: "flex", backgroundColor: "#E0E0E0", height: "170vh" }}
+      >
         <CssBaseline />
-        <AppBarDrawer />
+        <NewAppBar />
         <Box
           component="main"
           sx={{
@@ -235,149 +296,130 @@ const Dashboard = () => {
         >
           <Toolbar />
 
-          {/* AppBar */}
-          <Box sx={{ margin: "2px",mb:5 }}>
-            <Grid container justifyContent="center">
-              <Grid item lg={2}>
-                <Typography
-                  variant="h5"
-                  fontWeight="bold"
-                  component="div"
-                  sx={{ ml: 2 }}
-                >
-                  Sync
-                </Typography>
-              </Grid>
-              <Grid item lg={8}></Grid>
-              <Grid item lg={1}>
-                <Typography variant="h7">
-                  <HomeIcon
-                    sx={{ mb: -0.6, fontSize: "20px", padding: "2px" }}
-                  />
-                  Home
-                </Typography>
-              </Grid>
-              <Grid item lg={1}>
-                <Typography variant="h7">
-                  <SyncIcon
-                    sx={{ mb: -0.6, fontSize: "20px", padding: "2px" }}
-                  />
-                  Sync
-                </Typography>
-              </Grid>
-            </Grid>
-          </Box>
-
-          <Divider />
-          <img src={pray}/>
-          <Card>
-            <CardContent sx={{ margin: "15px" }}>
-              <Grid container justifyContent="center" spacing={7}>
-                <Grid item lg={2}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={QuestionType}
-                    sx={{ width: 230 }}
-                    renderInput={(params) => (
-                      <TextField {...params} placeholder="Question Type" />
-                    )}
-                  />
-                </Grid>
-                <Grid item lg={5}>
-                  <Box sx={{ ml: 4 }}>
-                    <LocalizationProvider
-                      dateAdapter={AdapterDayjs}
-                      localeText={{ start: "Start Date", end: "End Date" }}
-                    >
-                      <MobileDateRangePicker
-                        value={value}
-                        onChange={(newValue) => {
-                          setValue(newValue);
-                        }}
-                        renderInput={(startProps, endProps) => (
-                          <React.Fragment>
-                            <TextField {...startProps} />
-                            <Box>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Box>
-                            <TextField {...endProps} />
-                          </React.Fragment>
+          <Box
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              "& > :not(style)": {
+                m: 1,
+                mt: 3,
+                width: "100%",
+                height: 120,
+              },
+            }}
+          >
+            <Paper elevation={24}>
+              <Card>
+                <CardContent sx={{ margin: "15px" }}>
+                  <Grid container justifyContent="center" spacing={7}>
+                    <Grid item lg={2}>
+                      <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={QuestionType}
+                        sx={{ width: 230 }}
+                        data={data}
+                        renderInput={(params) => (
+                          <TextField {...params} placeholder="Question Type"   label="All"/>
                         )}
                       />
-                    </LocalizationProvider>
-                  </Box>
-                </Grid>
-                <Grid item lg={3} sx={{ ml: -4 }}>
-                  <Autocomplete
-                    disablePortal
-                    id="combo-box-demo"
-                    options={FetchType}
-                    sx={{ width: 230 }}
-                    renderInput={(params) => (
-                      <TextField {...params} placeholder="Select Type" />
-                    )}
-                  />
-                </Grid>
-                <Grid item lg={2}>
-                  <Box sx={{ textAlign: "center" }}>
-                    <Button fullWidth
-                      size="large"
-                      variant="contained"
-                      onClick={showResults}
-                      sx={{ backgroundColor: "#2979FF", color: "white", }}
-                      startIcon={<InsertDriveFileIcon />}
-                    >
-                      View
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-          {showDataTable ? (
-            <Grid container sx={{ mt: 1 }} justifyContent="center">
-            <Grid item lg={12}>
-              <Card>
-                <CardContent>
-                  {/* <div > */}
-                  <DataTable
-                    customStyles={customStyles}
-                    columns={columns}
-                    data={countries}
-                    pagination
-                    // fixedHeader
-                    fixedHeaderScrollHeight="500px"
-                    selectableRows
-                    selectableRowsHighlight
-                    highlightOnHover
-                    // actions ={<Button variant="contained">Views</Button>}
-                    subHeader
-                    // subHeaderAlign="left"
-                    subHeaderComponent={
-                      <input
-                        type="text" 
-                        placeholder=" Search here"
-                        style={{
-                          width: "250px",
-                          height: "50px",
-                          fontSize: "16px",
-                          spacing: (0, 2),
-                          backgroundColor: "#E0E0E0",
-                          borderRadius: "5px",
-                          color: "#757575", display: 'flex',border:"none",
-                        }}
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                    </Grid>
+                    <Grid item lg={5}>
+                      <Box sx={{ ml: 4 }}>
+                        <LocalizationProvider
+                          dateAdapter={AdapterDayjs}
+                          localeText={{ start: "Start Date", end: "End Date" }}
+                        >
+                          <MobileDateRangePicker
+                            value={value}
+                            onChange={(newValue) => {
+                              setValue(newValue);
+                            }}
+                            renderInput={(startProps, endProps) => (
+                              <React.Fragment>
+                                <TextField {...startProps} />
+                                <Box>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Box>
+                                <TextField {...endProps} />
+                              </React.Fragment>
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </Box>
+                    </Grid>
+                    <Grid item lg={3} sx={{ ml: -4 }}>
+                      <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={FetchType}
+                        sx={{ width: 230 }}
+                        renderInput={(params) => (
+                          <TextField {...params} placeholder="Select Type"  label="Not Fetched " />
+                        )}
                       />
-                    }
-                  />
-                  {/* </div> */}
+                    </Grid>
+                    <Grid item lg={2}>
+                      <Box sx={{ textAlign: "center" }}>
+                        <Button
+                          fullWidth
+                          size="large"
+                          variant="contained"
+                          onClick={showResults}
+                          sx={{ backgroundColor: "#2979FF", color: "white" }}
+                          startIcon={<InsertDriveFileIcon />}
+                        >
+                          View
+                        </Button>
+                      </Box>
+                    </Grid>
+                  </Grid>
                 </CardContent>
               </Card>
-            </Grid>
-          </Grid>
-          ) : (
-            ""
-          )}
+              {showDataTable ? (
+                <Grid container sx={{ mt: 1 }} justifyContent="center">
+                  <Grid item lg={12}>
+                    <Card>
+                      <CardContent>
+                        {/* <div > */}
+                        <Paper elevation={0}>
+                          {" "}
+                          <DataTable
+                            title="Quiz Data"
+                            customStyles={customStyles}
+                            columns={columns}
+                            data={filtereddata}
+                            fixedHeaderScrollHeight="500px"
+                            selectableRows
+                            selectableRowsHighlight
+                            highlightOnHover
+                            subHeader
+                            // progressPending={pending}
+                            // progressComponent={<CircularProgress color='inherit' />}
+                            pagination
+                            subHeaderComponent={
+                              <Search>
+                                <SearchIconWrapper>
+                                  <SearchIcon />
+                                </SearchIconWrapper>
+                                <StyledInputBase
+                                  placeholder="Search here"
+                                  value={search}
+                                  onChange={(e) => setSearch(e.target.value)}
+                                />
+                              </Search>
+                            }
+                          />
+                        </Paper>
+
+                        {/* </div> */}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              ) : (
+                ""
+              )}
+            </Paper>
+          </Box>
         </Box>
       </Box>
 

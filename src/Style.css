@@ -53,7 +53,7 @@
   right: 0;
 }
 .listClick:hover  {
-background-color: #CFD8DC;
+background-color:#E0E0E0;
 }
 .boxClick1:hover  {
   background-color:#F4F7FB;
@@ -67,3 +67,14 @@ background-color: #CFD8DC;
   background-color:#F4F7FB;
   transform: rotate(0.2deg);
   }
+  .blink {
+    animation: blinker 1.5s linear infinite;
+    color: red;
+    font-family: sans-serif;
+}
+@keyframes blinker {
+    .5% {
+        opacity: 0;
+    }
+}
+

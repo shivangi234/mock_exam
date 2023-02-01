@@ -1,6 +1,7 @@
 import React from "react";
 import "./Style.css";
-import AppBarDrawer from "./AppBarDrawer";
+// import AppBarDrawer from "./AppBarDrawer";
+import NewAppBar from "./NewAppBar";
 import {
   Card,
   CardContent,
@@ -33,6 +34,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
 import notifications from "./images/notifications.gif";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
+
 const drawerWidth = 240;
 
 const Dashboard = () => {
@@ -53,10 +55,11 @@ const Dashboard = () => {
   return (
     <div>
       <Box
-        sx={{ display: "flex", backgroundColor: "#E1F5FE", height: "100vh" }}
+        sx={{ display: "flex", backgroundColor: "#E0E0E0", height: "100vh" }}
       >
         <CssBaseline />
-        <AppBarDrawer />
+        {/* <AppBarDrawer /> */}
+        <NewAppBar />
         <Grow
           in={true}
           style={{ transformOrigin: "0 0 0 0" }}
@@ -71,9 +74,9 @@ const Dashboard = () => {
             }}
           >
             <Toolbar />
-            <Grid container columnSpacing={5}>
-              <Grid item lg={4}>
-                <Box  
+            <Grid container spacing={12}>
+              <Grid item lg={4} xs={9}>
+                <Box
                   sx={{
                     display: "flex",
                     flexWrap: "wrap",
@@ -84,8 +87,8 @@ const Dashboard = () => {
                     },
                   }}
                 >
-                  <Paper elevation={24}  className="boxClick1">
-                    <Box   sx={{ textAlign: "center" }}>
+                  <Paper elevation={24} className="boxClick1">
+                    <Box sx={{ textAlign: "center" }}>
                       <Typography
                         sx={{
                           background:
@@ -173,8 +176,9 @@ const Dashboard = () => {
                     <Divider />
                     <CardActions>
                       <Grid container justifyContent="center">
-                        <Grid item lg={4}>
-                          <Button 
+                        <Grid item lg={5}>
+                          <Button
+                            size="medium"
                             variant="contained"
                             sx={{
                               background:
@@ -191,8 +195,8 @@ const Dashboard = () => {
                 </Box>
               </Grid>
 
-              <Grid item lg={4}>
-              <Box
+              <Grid item lg={4} xs={9}>
+                <Box
                   sx={{
                     display: "flex",
                     flexWrap: "wrap",
@@ -203,7 +207,7 @@ const Dashboard = () => {
                     },
                   }}
                 >
-                  <Paper elevation={24}  className="boxClick2">
+                  <Paper elevation={24} className="boxClick2">
                     <Box sx={{ textAlign: "center" }}>
                       <Typography
                         sx={{
@@ -292,8 +296,9 @@ const Dashboard = () => {
                     <Divider />
                     <CardActions>
                       <Grid container justifyContent="center">
-                        <Grid item lg={4}>
+                        <Grid item lg={5}>
                           <Button
+                            size="medium"
                             variant="contained"
                             sx={{
                               background:
@@ -310,8 +315,8 @@ const Dashboard = () => {
                 </Box>
               </Grid>
 
-              <Grid item lg={4}>
-              <Box
+              <Grid item lg={4} xs={9}>
+                <Box
                   sx={{
                     display: "flex",
                     flexWrap: "wrap",
@@ -322,7 +327,7 @@ const Dashboard = () => {
                     },
                   }}
                 >
-                  <Paper elevation={24}  className="boxClick3">
+                  <Paper elevation={24} className="boxClick3">
                     <Box sx={{ textAlign: "center" }}>
                       <Typography
                         sx={{
@@ -411,8 +416,9 @@ const Dashboard = () => {
                     <Divider />
                     <CardActions>
                       <Grid container justifyContent="center">
-                        <Grid item lg={4}>
+                        <Grid item lg={5}>
                           <Button
+                            size="medium"
                             variant="contained"
                             sx={{
                               background:
@@ -430,7 +436,7 @@ const Dashboard = () => {
               </Grid>
             </Grid>
             <Grid container sx={{ mt: 3, ml: 1 }}>
-              <Grid item lg={10}>
+              <Grid item lg={12}>
                 <Typography
                   variant="h6"
                   color="#000099"
@@ -439,7 +445,11 @@ const Dashboard = () => {
                 >
                   Today's Exam Details
                   <span sx={{ mt: 3 }}>
-                    <FiberNewIcon sx={{ color: "#FF6F00", fontSize: "30px" }} />
+                    {/* <Chip label="new" color="warning" className="blink"/> */}
+                    <FiberNewIcon
+                      className="blink"
+                      sx={{ color: "#E64A19", fontSize: "30px" }}
+                    />
                   </span>
                 </Typography>
               </Grid>
@@ -453,13 +463,13 @@ const Dashboard = () => {
                     flexWrap: "wrap",
                     "& > :not(style)": {
                       m: 1,
-                      width: 1280,
+                      width: "100%",
                       height: 310,
                     },
                   }}
                 >
                   <Paper
-                    elevation={20}
+                    elevation={24}
                     sx={
                       {
                         // boxShadow: "1px 1px 0px 2px #E0E0E0",
@@ -470,14 +480,13 @@ const Dashboard = () => {
                     {/* <Typography vatiant="h7" color="#FF3D00" fontFamily="cursive" fontWeight="bold">
                      Today's Exam Details
                           </Typography>   */}
-                    <CardContent sx={{ margin: "0px" }}>
+                    <CardContent sx={{ margin: "0px",backgroundColor:"#EEEEEE" }}>
                       <List
                         className="listClick"
                         dense
                         sx={{
                           width: "100%",
-                          maxWidth: 1290,
-                          bgcolor: "#E3F2FD",
+                          bgcolor: "#FAFAFA",
                           cursor: "pointer",
                         }}
                       >
@@ -528,8 +537,7 @@ const Dashboard = () => {
                         sx={{
                           mt: 1,
                           width: "100%",
-                          maxWidth: 1290,
-                          bgcolor: "#E3F2FD",
+                          bgcolor: "#FAFAFA",
                           cursor: "pointer",
                         }}
                       >
@@ -580,8 +588,7 @@ const Dashboard = () => {
                         sx={{
                           mt: 1,
                           width: "100%",
-                          maxWidth: 1290,
-                          bgcolor: "#E3F2FD",
+                          bgcolor: "#FAFAFA",
                           cursor: "pointer",
                         }}
                       >
@@ -631,8 +638,7 @@ const Dashboard = () => {
                         sx={{
                           mt: 1,
                           width: "100%",
-                          maxWidth: 1290,
-                          bgcolor: "#E3F2FD",
+                          bgcolor: "#FAFAFA",
                           cursor: "pointer",
                         }}
                       >
