@@ -1,6 +1,6 @@
 import axios from "axios";
 import { React, useEffect, useState } from "react";
-import NewAppBar from "./NewAppBar";
+import AppBarDrawer from "../Components/AppBarDrawer";
 import {
   Avatar,
   Button,
@@ -201,7 +201,7 @@ const Dashboard = () => {
   return (
     <Box sx={{ display: "flex", backgroundColor: "#E0E0E0", height: "170vh" }}>
       <CssBaseline />
-      <NewAppBar />
+      <AppBarDrawer />
       <Box
         component="main"
         sx={{

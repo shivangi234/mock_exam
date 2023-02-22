@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import NewAppBar from "./NewAppBar";
+import AppBarDrawer from "../Components/AppBarDrawer";
 import {
   Autocomplete,
   AppBar,
@@ -19,7 +19,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import SwipeableViews from "react-swipeable-views";
+// import SwipeableViews from "react-swipeable-views";
 import { LocalizationProvider } from "@mui/x-date-pickers-pro";
 import { AdapterDayjs } from "@mui/x-date-pickers-pro/AdapterDayjs";
 import { MobileDateRangePicker } from "@mui/x-date-pickers-pro/MobileDateRangePicker";
@@ -111,11 +111,11 @@ const Dashboard = () => {
   return (
     <>
       <Box
-        sx={{ display: "flex", backgroundColor: "#E0E0E0", height: "140vh" }}
+        sx={{ display: "flex",backgroundColor: 'rgba(0,0,0,0.1)', height: "100vh" }}
       >
         <CssBaseline />
-   
-        <NewAppBar />
+
+        <AppBarDrawer />
         <Box
           component="main"
           sx={{
@@ -139,23 +139,8 @@ const Dashboard = () => {
                   Manage
                 </Typography>
               </Grid>
-              <Grid item lg={8}></Grid>
-              <Grid item lg={1}>
-                <Typography variant="h7">
-                  <HomeIcon
-                    sx={{ mb: -0.6, fontSize: "20px", padding: "2px" }}
-                  />
-                  Home
-                </Typography>
-              </Grid>
-              <Grid item lg={1}>
-                <Typography variant="h7">
-                  <ManageSearchIcon
-                    sx={{ mb: -0.6, fontSize: "20px", padding: "2px" }}
-                  />
-                  Manage
-                </Typography>
-              </Grid>
+              <Grid item lg={10}></Grid>
+
             </Grid>
           </Box>
 
@@ -164,7 +149,7 @@ const Dashboard = () => {
               display: "flex",
               flexWrap: "wrap",
               "& > :not(style)": {
-                m: 1,mt:3,
+                m: 1, mt: 3,
                 width: "100%",
                 height: 320,
               },
@@ -647,8 +632,8 @@ const Dashboard = () => {
           </Box>
 
           {/* The  Card main Content */}
-        
-      </Box>
+
+        </Box>
       </Box>
     </>
   );

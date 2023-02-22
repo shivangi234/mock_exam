@@ -1,23 +1,26 @@
-import React from 'react'
+import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Dashboard from './Dashboard';
-import Sync from "./Sync";
-import Update from "./Update"
-import Manage from "./Manage"
-import Countries from './Country';
-import Quiz from './Quiz';
+import Dashboard from "./Pages/Dashboard";
+import Sync from "./Pages/Sync";
+import Update from "./Pages/Update";
+import Manage from "./Pages/Manage";
+import AppBarDrawer from "./Components/AppBarDrawer";
+import Demo from "./Pages/Demo";
+import './App.css';
+
 const App = () => {
   return (
     <Routes>
-       <Route path="/" element={<Dashboard />} />
-     <Route path="/dashboard" element={<Dashboard />} />
-     <Route path="/sync" element={<Sync />} />
-     <Route path="/update" element={<Update />} />
-     <Route path="/manage" element={<Manage />} />
-     <Route path="/datatable" element={<Countries />} />
-     <Route path="/quiz" element={<Quiz />} />
-    </Routes>
-  )
-}
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/sync" element={<Sync />} />
+      <Route path="/update" element={<Update />} />
+      <Route path="/manage" element={<Manage />} />
+      <Route path="/appbar" element={<AppBarDrawer />} />
+      <Route path="/demo" element={<Demo />} />
 
-export default App
+    </Routes>
+  );
+};
+
+export default App;
