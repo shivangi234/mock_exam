@@ -18,6 +18,8 @@ const App = () => {
       <Route path="/manage" element={<Manage />} />
       <Route path="/appbar" element={<AppBarDrawer />} />
       <Route path="/demo" element={<Demo />} />
+      <Route path="/Start" element={<Demo />} />
+
 
     </Routes>
   );
