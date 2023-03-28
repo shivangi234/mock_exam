@@ -28,6 +28,8 @@ import { styled } from "@mui/material/styles";
 import moment from "moment/moment";
 import AppBarDrawer from "../Components/AppBarDrawer";
 import CircularProgress from "@mui/material/CircularProgress";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 // import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 // import dayjs from 'dayjs';
 // import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -128,21 +130,41 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 
 const Dashboard = () => {
+  const [valuesPassword, setValuesPassword] = useState({
+    pass: "",
+    showPass: false
+  });
 
+  const handleChangePassword = (e) => {
+    setValuesPassword({
+      ...valuesPassword,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const togglePasswordHide = () => {
+    setValuesPassword({
+      ...valuesPassword,
+      showPass: !valuesPassword.showPass
+    });
+  };
   //States For Quiz
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
   const [filtereddata, setFiltereddata] = useState([]);
   // const [pending, setPending] = React.useState(true);
   // const [rows, setRows] = React.useState([]);
-  const [quizdata, setQuizdata] = useState({ org_code: "STLIND", centre_code: "STLIND", question_type: "MCQ", quiz_status: "ALL", start_date: "2022-01-01", end_date: "2022-08-29" })
+  const [quizdata, setQuizdata] = useState({ org_code: "STLIND", centre_code: "STLIND", question_type: "MCQ", quiz_status: "ALL", start_date: "2022-01-01", end_date: "2022-08-29",quiz_code:"1F5F8E4F-BC70-EAE1-CEF6-6F6D3DDF66DC" })
 
+  const  [modelData,setModelData] =  useState([]);
   const question_type = quizdata.question_type;
   const start_date = quizdata.start_date;
   const end_date = quizdata.end_date;
   const quiz_status =quizdata.quiz_status;
+  const quiz_code =quizdata.quiz_code;
+  // console.log(quiz_code)
   const baseURL = `https://demoexam.edusols.com/api/tassess/sync_quiz.php? 
-  oper=EXAM_LIST&org_code=STLIND&centre_code=STLIND&start_date=${start_date}&end_date=${end_date}&question_type=${question_type}&quiz_status=${quiz_status}`;
+  oper=EXAM_LIST&org_code=STLIND&centre_code=STLIND&start_date=${start_date}&end_date=${end_date}&question_type=${question_type}&quiz_status=${quiz_status}&quiz_code=${quiz_code}`;
 
 
   //States for Modals
@@ -159,7 +181,11 @@ const Dashboard = () => {
   //States for Fetch
 
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
+  // const handleOpen = (row) =>
+  // { 
+  //  alert(row.quiz_code)
+  //   setOpen(true)
+  // };
   const handleClose = () => setOpen(false);
 
   //States for Update
@@ -177,7 +203,10 @@ const Dashboard = () => {
   const handleOpen4 = () => setOpen4(true);
   const handleClose4 = () => setOpen4(false);
 
-
+  //States for fetching exam name
+  const [fetchQname,setFetchQname] = React.useState("");
+  
+  
   //States for api binding
   //const [loginFormData, setLoginFormData] = useState({ userName: "alok", password: "Ab@12345", orgCode: "STLIND"});
 
@@ -190,6 +219,14 @@ const Dashboard = () => {
 
   }
 
+  //for question syn password submit
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      password: data.get('password'),
+    });
+  };
 
   //API Call
 
@@ -204,6 +241,15 @@ const Dashboard = () => {
       console.log(error);
     }
   };
+
+  //for Api binding
+  const showDetails = (quiz_id) => {
+    fetch (`http://demotqems.silicontechlab.com/api/assessment/common.php?oper=EXAMINFO&quiz_id=${quiz_id}`)
+    .then(response => response.json())
+    .then (res => setModelData(res))
+    // console.log(modelData);
+    setOpen(true)
+  }
 
   React.useEffect(() => {
     const timer = setInterval(() => {
@@ -229,14 +275,16 @@ const Dashboard = () => {
   const showProgress = () => {
     // setBtnState(true);
     setProgressBar(true);
+   console.log(data)
+ 
   };
-    //showing progressbar Photo
+  //showing progressbar Photo
     const showProgress2 = () => {
       // setBtnState(true);
       setProgressBar2(true);
     };
 
-     //Result Update
+  //Result Update
         const showProgress3 = () => {
           setBtnState3(true);
           setProgressBar3(true);
@@ -246,17 +294,7 @@ const Dashboard = () => {
       setBtnState(true);
       setAuthorization(true);
     }
-
-    //Password Hide
-
-    const handleClickShowPassword = () => {
-      setValues({
-        ...values,
-        showPassword: !values.showPassword,
-      });
-    };
-  
-    const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event) => {
       event.preventDefault();
     };
 
@@ -289,7 +327,7 @@ const Dashboard = () => {
   const columns = [
     {
       name: "Sl No",
-      cell: (row, index) => index + 1,
+      cell: (row) => row.quiz_id,
       width: "4%",
     },
     {
@@ -300,7 +338,7 @@ const Dashboard = () => {
     },
     {
       name: "Quiz Open Date",
-      selector: (row) => moment(row.quiz_open_date_time).format('DD-MMM -YYYY h:mm A'),
+      selector: (row) => moment(row.quiz_open_date_time).format('DD-MMM-YYYY h:mm A'),
       sortable: "true",
     },
     {
@@ -332,11 +370,22 @@ const Dashboard = () => {
     },
     {
       name: "Action Buttons ",
-      cell: (row) => (<><Button
+      cell: (row) => (
+      <>
+      <Button
         variant="contained"
         size="small"
         color="warning"
-        onClick={handleOpen}
+        // onClick={showDetails(row.quiz_id)}
+      // onClick={handleOpen}
+      // onClick={() => handleOpen('quiz_code', this.quizCode.setOpen)}
+        onClick={() =>
+           {
+            // alert(row.quiz_name);
+            setOpen(true);
+            setFetchQname(row.quiz_name);
+          }}
+
       >
         {/* <DownloadForOfflineIcon/> */}
         Fetch
@@ -345,11 +394,18 @@ const Dashboard = () => {
           variant="contained"
           size="small"
           color="info"
-          onClick={handleOpen2}
+          // onClick={handleOpen2}
+          onClick={() =>
+            {
+             // alert(row.quiz_name);
+             setOpen2(true);
+             setFetchQname(row.quiz_name);
+           }}
         >
           {/* <DriveFolderUploadRoundedIcon/> */}
           Update
-        </Button></>
+        </Button>
+        </>
       ),
     },
   ];
@@ -393,10 +449,10 @@ const Dashboard = () => {
                         <InputLabel id="question_type">Exam Type</InputLabel>
                         <Select fullWidth labelId="question_type" id="question_type" label="QuestionType" onChange={handleChange}
                           name="question_type" value={quizdata.question_type}>
-                          <MenuItem value="ALL" >All</MenuItem>
-                          <MenuItem value="MCQ" >MCQ</MenuItem>
-                          <MenuItem value="LAQ" >LAQ</MenuItem>
-                          <MenuItem value="MCQ + LAQ" >MCQ + LAQ</MenuItem>
+                          <MenuItem value="ALL">All</MenuItem>
+                          <MenuItem value="MCQ">MCQ</MenuItem>
+                          <MenuItem value="LAQ">LAQ</MenuItem>
+                          <MenuItem value="MCQ + LAQ">MCQ + LAQ</MenuItem>
                         </Select>
                       </FormControl>
                     </Grid>
@@ -531,12 +587,9 @@ const Dashboard = () => {
               <Grid container>
                 <Grid item lg={10}>
                   <Typography variant="h7" component="div" float="left"><span style={{ fontWeight: "bold" }}>Exam Name:-</span>&nbsp;
-                    BS Abdur Rehman Unversity Engineering Entrance Examination
-                    (BSAUEEE 2012)
+                   {fetchQname}
                   </Typography>
-                  <Typography variant="h7" component="div" float="left"><span style={{ fontWeight: "bold" }}>Examine Assigne:-</span>&nbsp;
-                    100
-                  </Typography>
+                
                 </Grid>
                 <Grid item lg={2}>
                   {btnState ? (
@@ -551,20 +604,30 @@ const Dashboard = () => {
 
                   <Grid container justifyContent="center" spacing={2} >
                   <Grid item lg={3}>  
-                    <TextField   placeholder=" Enter Exam Sync Password" variant="outlined" size="small" float="center"  InputProps={{
-                  startAdornment: (
-                  <InputAdornment position="start">
-                  <LockIcon fontSize="small" color="primary" />
-                  </InputAdornment>
-                  ),
-                  }} fullWidth />
+                    <TextField   placeholder=" Enter Exam Sync Password" variant="outlined"  type={valuesPassword.showPass ? "text" : "password"} size="small" float="center"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password"
+                              edge="end"
+                              onClick={togglePasswordHide}
+                            >
+                              {valuesPassword.showPass ? (
+                                <VisibilityIcon />
+                              ) : (
+                                <VisibilityOffIcon />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }}
+                      onChange={handleChangePassword}  
+                  fullWidth />
                     </Grid>
                   <Grid item lg={3}> <Button variant="contained" float="center" color="info" size="medium" fullWidth onClick={showProgress} >               <TelegramIcon/>&nbsp; 
                   Submit</Button> </Grid>
                   </Grid>
-
-            
-    
               ):(
                     
                 ""
@@ -590,11 +653,7 @@ const Dashboard = () => {
               <Grid container>
                 <Grid item lg={10}>
                   <Typography variant="h7" component="div" float="left"><span style={{ fontWeight: "bold" }}>Exam Name:-</span>&nbsp;
-                    BS Abdur Rehman Unversity Engineering Entrance Examination
-                    (BSAUEEE 2012)
-                  </Typography>
-                  <Typography variant="h7" component="div" float="left"><span style={{ fontWeight: "bold" }}>Examine Assigned:-</span>&nbsp;
-                    200
+                    {fetchQname}
                   </Typography>
                 </Grid>
           <br/>
@@ -662,31 +721,49 @@ const Dashboard = () => {
             Update  Result
             </Typography>
             <CardContent sx={{ margin: "5px" }}>
-              <Grid container>
-                <Grid item lg={10}>
+              <Grid container spacing={14}>
+                <Grid item lg={9}>
                   <Typography variant="h7" component="div" float="left"><span style={{ fontWeight: "bold" }}>Exam Name:-</span>&nbsp;
-                    BS Abdur Rehman Unversity Engineering Entrance Examination
-                    (BSAUEEE 2012)
+                  {fetchQname}
                   </Typography>
-                  <Typography variant="h7" component="div" float="left" sx={{ mt: 1 }}><span style={{ fontWeight: "bold" }}> Status:-</span>&nbsp;
-                    <Chip
-                      label="Updated"
-                      variant="outlined"
-                      size="medium"
-                      color="success"
-                    />
+                  <br/>
+                  <Typography variant="h7">
+                    <span style={{fontWeight: "bold",marginTop: "18px" }}>Examine Assigned -</span>&nbsp;
+                    <Chip label="120" variant="contained" size="small" color="primary" />
                   </Typography>
+
+
+                  <Typography variant="h7" style={{ padding: "10px", mt: 3, fontWeight: "" }}>
+                    <b>Examine Attempt - </b>&nbsp;
+                    <Chip label="100" variant="contained" size="small" color="success" />
+                  </Typography>
+
+
+                  <Typography variant="h7" style={{ padding: "10px", mt: 3, fontWeight: "" }}>
+                    <b> Examine Absent -</b>&nbsp;
+                    <Chip label="20" variant="contained" size="small" color="warning" />
+                  </Typography>
+
+
                 </Grid>
-                <Grid item lg={2}>
-                  <Button
-                    color="success"
-                    variant="contained"
-                    onClick={handleOpen4}
-                  > <FileUploadIcon />
-                    Update Result
-                  </Button>
+                <Grid item lg={3}>
+                 {btnState3 ? (
+                    <Button color="warning" variant="contained" ><DownloadForOfflineIcon />&nbsp;&nbsp;&nbsp;&nbsp;Reupdate</Button>
+                  ) : (
+                    <Button color="success" variant="contained" onClick={showProgress3} ><DownloadForOfflineIcon />&nbsp;
+                     Update Result
+                    </Button>
+                  )}
+                
                 </Grid>
               </Grid>
+              {progressBar3 ? (
+                <Box sx={{ width: "100%" }}>
+                  <LinearProgressWithLabel value={progress} />
+                </Box>
+              ) : (
+                ""
+              )}
             </CardContent>
             <br />
           </Card>
@@ -703,11 +780,10 @@ const Dashboard = () => {
               Update Attendance
             </Typography>
             <CardContent sx={{ margin: "5px" }}>
-              <Grid container>
+              <Grid container spacing={-1.5}>
                 <Grid item lg={10}>
                   <Typography variant="h7" component="div" float="left"><span style={{ fontWeight: "bold" }}>Exam Name:-</span>&nbsp;
-                    BS Abdur Rehman Unversity Engineering Entrance Examination
-                    (BSAUEEE 2012)
+                  {fetchQname}
                   </Typography>
                   <Typography variant="h7" component="div" float="left" sx={{ mt: 1 }} ><span style={{ fontWeight: "bold" }}> Status:-</span>&nbsp;
                     <Chip
@@ -768,7 +844,7 @@ const Dashboard = () => {
 
                 </Grid>
                 <Grid item lg={3}>
-                  <ButtonGroup ><Button variant="contained" disabled>    </Button><Button style={{ color: "#757575" }}><FolderCopyIcon /> Choose Files</Button></ButtonGroup>
+                  <ButtonGroup ><Button variant="contained" disabled>    </Button><Button style={{ color: "#757575" }} ><FolderCopyIcon /> Choose Files</Button></ButtonGroup>
                 </Grid>
                 <Grid item lg={3}>
                   <Button color="info" variant="contained" size="medium" > <FileUploadIcon /> Upload</Button>&nbsp;
@@ -801,8 +877,8 @@ const Dashboard = () => {
               Update Exam Result
             </Typography>
             <CardContent>
-              <Grid container>
-                <Grid item lg={9}>
+              <Grid container>  
+                <Grid item lg={9} >
                   <Typography variant="h7" style={{ padding: "10px", mt: 3 }}>
                     <b> Exam Name - </b>
                     <span style={{ color: "#424242", fontFamily: "sans-serif", fontSize: "20px" }}>
@@ -839,11 +915,16 @@ const Dashboard = () => {
                 
                 </Grid>
               </Grid>
-              <br />
-              {progressBar3 ? (
-                <Box sx={{ width: "100%" }}>
+          
+              {progressBar3 ? (<>
+              <Box>
+              <Typography variant="h7" >2 row(s) processed
+                  </Typography>
+              </Box>
+              <Box sx={{ width: "100%" }}>
                   <LinearProgressWithLabel value={progress} />
-                </Box>
+                </Box></>
+                 
               ) : (
                 ""
               )}
@@ -854,5 +935,4 @@ const Dashboard = () => {
     </>
   );
 };
-
 export default Dashboard;

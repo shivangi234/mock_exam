@@ -206,7 +206,7 @@ export default function PersistentDrawerLeft() {
             >
                 <DrawerHeader>
                     <img
-                        src={"https://media.glassdoor.com/sqll/503743/silicon-techlab-squarelogo-1643983959442.png"}
+                        src={"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRURL9ljlnYY_BEe2mkIOO-41WoR-3LOV-Nu0J22DxDTQ&s"}
                         alt="Logo"
                         style={{ height: "65px", width: "100%" }}
                     />
