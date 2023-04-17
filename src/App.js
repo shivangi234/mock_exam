@@ -6,7 +6,7 @@ import Update from "./Pages/Update";
 import Manage from "./Pages/Manage";
 import AppBarDrawer from "./Components/AppBarDrawer";
 import Demo from "./Pages/Demo";
-import './App.css';
+import "./App.css";
 
 const App = () => {
   return (
@@ -18,9 +18,6 @@ const App = () => {
       <Route path="/manage" element={<Manage />} />
       <Route path="/appbar" element={<AppBarDrawer />} />
       <Route path="/demo" element={<Demo />} />
-      <Route path="/Start" element={<Demo />} />
-
-
     </Routes>
   );
 };
